@@ -10,6 +10,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
+        <version>3.6.0</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -34,19 +35,15 @@
         <configuration>
           <connectors>
             <connector>
-              <connectorClass>io.camunda.connector.inbound.MyConnectorExecutable</connectorClass>
+              <connectorClass>io.camunda.connector.inbound.CustomInboundConnectorExecutable</connectorClass>
               <files>
                 <file>
-                  <templateId>io.camunda.connectors.inbound.EmailMessageStartEvent.v1</templateId>
-                  <templateFileName>email-inbound-connector-start-event.json</templateFileName>
+                  <templateId>io.camunda.connectors.webhook.CustomConnector.v1</templateId>
+                  <templateFileName>webhook-custom-inbound-connector-start-event.json</templateFileName>
                 </file>
                 <file>
-                  <templateId>io.camunda.connectors.inbound.EmailIntermediate.v1</templateId>
-                  <templateFileName>email-inbound-connector-intermediate.json</templateFileName>
-                </file>
-                <file>
-                  <templateId>io.camunda.connectors.inbound.EmailBoundary.v1</templateId>
-                  <templateFileName>email-inbound-connector-boundary.json</templateFileName>
+                  <templateId>io.camunda.connectors.webhook.CustomConnectorStartMessage.v1</templateId>
+                  <templateFileName>webhook-custom-inbound-connector-start-message.json</templateFileName>
                 </file>
               </files>
             </connector>
@@ -79,13 +76,13 @@
     <dependency>
       <groupId>io.camunda.connector</groupId>
       <artifactId>connector-core</artifactId>
-      <version>8.7.0-alpha3</version>
+      <version>8.6.6</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>io.camunda.connector</groupId>
       <artifactId>connector-test</artifactId>
-      <version>8.7.0-alpha3</version>
+      <version>8.6.6</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -135,9 +132,45 @@
       </exclusions>
     </dependency>
     <dependency>
+      <groupId>io.camunda.connector</groupId>
+      <artifactId>connector-webhook</artifactId>
+      <version>8.6.6</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>jaxb-api</artifactId>
+          <groupId>javax.xml.bind</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>commons-codec</artifactId>
+          <groupId>commons-codec</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>guava</artifactId>
+          <groupId>com.google.guava</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>java-jwt</artifactId>
+          <groupId>com.auth0</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jwks-rsa</artifactId>
+          <groupId>com.auth0</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>annotations</artifactId>
+          <groupId>org.jetbrains</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>protobuf-java-util</artifactId>
+          <groupId>com.google.protobuf</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.25.3</version>
+      <version>3.27.3</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -149,7 +182,7 @@
     <dependency>
       <groupId>io.camunda.connector</groupId>
       <artifactId>spring-boot-starter-camunda-connectors</artifactId>
-      <version>8.7.0-alpha3</version>
+      <version>8.6.6</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -157,8 +190,8 @@
           <groupId>io.camunda.connector</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>spring-boot-starter-camunda-sdk</artifactId>
-          <groupId>io.camunda</groupId>
+          <artifactId>spring-boot-starter-camunda</artifactId>
+          <groupId>io.camunda.spring</groupId>
         </exclusion>
         <exclusion>
           <artifactId>spring-boot-starter-web</artifactId>
@@ -169,15 +202,25 @@
           <groupId>org.springframework.boot</groupId>
         </exclusion>
         <exclusion>
+          <artifactId>identity-spring-boot-autoconfigure</artifactId>
+          <groupId>io.camunda</groupId>
+        </exclusion>
+        <exclusion>
           <artifactId>connector-validation</artifactId>
           <groupId>io.camunda.connector</groupId>
         </exclusion>
       </exclusions>
     </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.30</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
   <properties>
     <maven.compiler.release>21</maven.compiler.release>
-    <version.assertj>3.25.3</version.assertj>
+    <version.assertj>3.27.3</version.assertj>
     <java.version>21</java.version>
     <maven.compiler.source>21</maven.compiler.source>
     <version.mockito>5.11.0</version.mockito>
@@ -185,6 +228,6 @@
     <maven.compiler.target>21</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <version.junit-jupiter>5.10.2</version.junit-jupiter>
-    <version.connectors>8.7.0-alpha3</version.connectors>
+    <version.connectors>8.6.6</version.connectors>
   </properties>
 </project>
